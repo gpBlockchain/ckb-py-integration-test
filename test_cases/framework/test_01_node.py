@@ -18,8 +18,7 @@ class TestNode:
         cls.node.clean()
 
     def test_miner(self):
-        time.sleep(10)
         self.node.start_miner()
         time.sleep(10)
-        tip_number =  self.node.getClient().get_tip_block_number()
+        tip_number = self.node.getClient().get_tip_block_number()
         assert tip_number > 0

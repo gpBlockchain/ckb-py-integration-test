@@ -111,16 +111,23 @@ class CkbNode(Node):
         return self.client
 
     def restart(self, config):
-        pass
+        self.stop()
+        self.start()
 
     def start(self):
+        if self.ckb_pid != -1:
+            return
         self.ckb_pid = run_command("cd {ckb_dir} && ./ckb run --indexer > node.log 2>&1 &".format(ckb_dir=self.ckb_dir))
-        # //todo replace by rpc
+        # wait ckb start
         time.sleep(3)
 
     def stop(self):
+        if self.ckb_pid == -1:
+            return
         run_command("kill {pid}".format(pid=self.ckb_pid))
         self.ckb_pid = -1
+        # wait ckb close
+        time.sleep(3)
 
     def prepare(self):
         create_config_file(self.ckb_config, self.ckb_config_path.ckb_config_path,
@@ -137,7 +144,6 @@ class CkbNode(Node):
         shutil.copy("{root_path}/template/ckb/default.db-options".format(root_path=get_project_root()), self.ckb_dir)
         shutil.copy("{root_path}/{spec_path}".format(root_path=get_project_root(),
                                                      spec_path=self.ckb_config_path.ckb_spec_path), self.ckb_dir)
-
         # create_config_file(self.ckb_miner_config, self.ckb_config_path.ckb_miner_config_path, dec_dir)
         # create_config_file(self.ckb_specs_config, self.ckb_config_path.ckb_miner_config_path, dec_dir)
         #     if self.ckb_config_path.ckb_spec_path == "dev":
@@ -150,12 +156,16 @@ class CkbNode(Node):
         pass
 
     def start_miner(self):
+        if self.ckb_miner_pid != -1:
+            return
         self.ckb_miner_pid = run_command(
-            "cd {ckb_dir} && ./ckb miner > ckb.miner.log 2>&1  &".format(ckb_dir=self.ckb_dir))
+            "cd {ckb_dir} && ./ckb miner > ckb.miner.log 2>&1 &".format(ckb_dir=self.ckb_dir))
         # replace check height upper
         time.sleep(3)
 
     def stop_miner(self):
+        if self.ckb_miner_pid == -1:
+            return
         run_command("kill {pid}".format(pid=self.ckb_miner_pid))
         self.ckb_miner_pid = -1
 
