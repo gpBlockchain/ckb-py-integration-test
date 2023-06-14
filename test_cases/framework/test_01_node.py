@@ -14,6 +14,7 @@ class TestNode:
     @classmethod
     def teardown_class(cls):
         cls.node.stop()
+        cls.node.stop_miner()
         cls.node.clean()
 
     def test_miner(self):
