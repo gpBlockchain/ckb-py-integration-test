@@ -84,4 +84,4 @@ def run_command(cmd):
 
 def get_project_root():
     current_path = os.path.dirname(os.path.abspath(__file__))
-    return "{path}/pythonProject2".format(path=current_path.split("/ckb-py-integration-test")[0])
+    return "{path}/ckb-py-integration-test".format(path=current_path.split("/ckb-py-integration-test")[0])
