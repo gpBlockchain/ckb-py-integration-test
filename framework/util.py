@@ -3,7 +3,7 @@ import subprocess
 import time
 import json
 import os
-
+import re
 
 def to_json(value):
     return json.dumps(value)
@@ -37,6 +37,7 @@ def get_ckb_configs(p2p_port, rpc_port, spec='{ file = "dev.toml" }'):
 
 
 def create_config_file(config_values, template_path, output_file):
+    print("get_project_root:{get_project_root}".format(get_project_root=get_project_root()))
     file_loader = FileSystemLoader(get_project_root())
     # 创建一个环境
     env = Environment(
@@ -90,4 +91,10 @@ def run_command(cmd):
 
 def get_project_root():
     current_path = os.path.dirname(os.path.abspath(__file__))
-    return "{path}/ckb-py-integration-test".format(path=current_path.split("/ckb-py-integration-test")[0])
+    pattern = r"(.*ckb-py-integration-test)"
+    matches = re.findall(pattern, current_path)
+    if matches:
+        root_dir = max(matches, key=len)
+        return root_dir
+    else:
+        raise Exception("not found ckb-py-integration-test dir")
