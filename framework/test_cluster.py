@@ -37,6 +37,7 @@ class Cluster:
 
     def stop_all_nodes(self):
         for node in self.ckb_nodes:
+            node.stop_miner()
             node.stop()
 
     def clean_all_nodes(self):

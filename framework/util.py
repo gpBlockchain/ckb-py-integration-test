@@ -64,13 +64,19 @@ def run_command(cmd):
     if cmd[-1] == "&":
         cmd1 = "{cmd} echo $! > pid.txt".format(cmd = cmd)
         print("cmd:{cmd}".format(cmd=cmd1))
-
-        subprocess.Popen(cmd1, shell=True)
+        process = subprocess.Popen(cmd1, shell=True)
         time.sleep(1)
+        print("process PID:", process.pid)
         with open("pid.txt", "r") as f:
             pid = int(f.read().strip())
             print("PID:", pid)
-            return pid
+            # pid is new shell
+            # pid+1 = run cmd
+            # result:guopenglin       55456  13.6  0.2 409387712  34448   ??  R     4:22PM   0:00.05 ./ckb run --indexer
+            # guopenglin       55457   5.8  0.0 34411380   2784   ??  S     4:22PM   0:00.02 /bin/sh -c ps aux | grep ckb
+            # guopenglin       55459   0.0  0.0 33726716   1836   ??  R     4:22PM   0:00.01 grep ckb
+            # guopenglin       55455   0.0  0.0 438105996   1508   ??  S     4:22PM   0:00.01 /bin/sh -c cd /Users/guopenglin/WebstormProjects/gp/ckb-py-integration-test/tmp/node/node && ./ckb run --indexer > node.log 2>&1 & echo $! > pid.txt
+            return pid+1
 
     print("cmd:{cmd}".format(cmd=cmd))
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)

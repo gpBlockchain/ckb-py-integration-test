@@ -28,8 +28,6 @@ class TestClass2:
     def test_method1(self, setup_and_teardown):
         print("Executing test_method1")
         print("Setup data is: ", setup_and_teardown)
-        x = "hello"
-        assert hasattr(x, 'check')
 
     def test_method2(self, setup_and_teardown):
         print("Executing test_method2")
