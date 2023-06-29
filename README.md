@@ -37,3 +37,8 @@ addopts = -s
 ## Contributing
 
 If you want to contribute to this project, you can fork this repository, create a feature branch, and send us a Pull Request. For more information, please see the CONTRIBUTING.md file.
+=======
+
+## Contributing
+
+If you want to contribute to this project, you can fork this repository, create a feature branch, and send us a Pull Request. For more information, please see the CONTRIBUTING.md file.

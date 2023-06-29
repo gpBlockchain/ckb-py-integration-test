@@ -9,7 +9,6 @@ prepare:
 test:
 	python -m pytest
 
-
 clean:
 	pkill ckb
 	rm -rf tmp
