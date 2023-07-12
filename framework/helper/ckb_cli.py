@@ -1,5 +1,6 @@
 import json
 import re
+from functools import wraps
 
 import yaml
 
@@ -10,6 +11,29 @@ from framework.util import run_command
 # cli_path = "cd {root_path}/{cli_path} && ./ckb-cli".format(root_path=get_project_root(),
 #                                                            cli_path=CkbNodeConfigPath.CURRENT_TEST.ckb_bin_path)
 cli_path = f"cd {get_project_root()}/source && ./ckb-cli"
+
+def exception_use_old_ckb():
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                if "SoftFork" in str(e):
+                    global cli_path
+                    cli_path = f"cd {get_project_root()}/source && ./ckb-cli-old"
+                    print("------ change use old ckb-cli -------")
+                    try:
+                        ret = func(*args, **kwargs)
+                        cli_path = f"cd {get_project_root()}/source && ./ckb-cli"
+                        return ret
+                    except Exception as e:
+                        cli_path = f"cd {get_project_root()}/source && ./ckb-cli"
+                        raise e
+                else:
+                    raise e
+        return wrapper
+    return decorator
 
 
 def wallet_get_capacity(ckb_address, api_url='http://127.0.0.1:8114'):
@@ -100,7 +124,7 @@ def wallet_get_live_cells(ckb_address, api_url='http://127.0.0.1:8114'):
     cmd = f"export API_URL={api_url} && {cli_path} wallet get-live-cells --address {ckb_address} --output-format json"
     return json.loads(run_command(cmd))
 
-
+@exception_use_old_ckb()
 def wallet_transfer_by_private_key(private_key, to_ckb_address, capacity, api_url="http://127.0.0.1:8114",
                                    fee_rate="1000"):
     """
