@@ -2,13 +2,10 @@
 name: Update CKB
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  schedule:
+    - cron: '0 4 * * *' # 在北京时间每天的12点触发
 
-permissions:
-  contents: read
+  workflow_dispatch:
 
 jobs:
   build:
