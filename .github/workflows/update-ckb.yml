@@ -1,5 +1,5 @@
 
-name: Python application
+name: Update CKB
 
 on:
   push:
