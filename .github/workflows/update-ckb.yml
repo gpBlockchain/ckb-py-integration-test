@@ -1,0 +1,27 @@
+
+name: Python application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        repository: nervosnetwork/ckb
+        ref: develop
+    - name: Update ckb
+      run: |
+        cd ckb
+        ckb_version=$(./ckb --version | sed 's/.* (\(.*\) .*)/\1/')
+        echo ${ckb_version}
