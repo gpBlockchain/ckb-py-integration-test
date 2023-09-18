@@ -21,6 +21,7 @@ jobs:
         repository: nervosnetwork/ckb
         ref: develop
     - name: Update ckb
+      id: UpdateCkb
       run: |
         wget http://github-test-logs.ckbapp.dev/ckb/bin/ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz		
         tar -zxvf ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz	
@@ -48,7 +49,7 @@ jobs:
         fi
         
     - name: Upload latest to Qiniu
-      if: ${{ steps.my_previous_step.outputs.compare_result == 'true' }}
+      if: ${{ steps.UpdateCkb.outputs.compare_result == 'true' }}
       uses: gpBlockchain/upload-to-qiniu-action@main
       with:
         access_key: ${{ secrets.ACCESS_KEY }}
@@ -58,7 +59,7 @@ jobs:
         local_file: ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
 
     - name: Upload develop to Qiniu
-      if: ${{ steps.my_previous_step.outputs.compare_result == 'true' }}
+      if: ${{ steps.UpdateCkb.outputs.compare_result == 'true' }}
       uses: gpBlockchain/upload-to-qiniu-action@main
       with:
         access_key: ${{ secrets.ACCESS_KEY }}
