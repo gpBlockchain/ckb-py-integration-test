@@ -22,5 +22,46 @@ jobs:
         ref: develop
     - name: Update ckb
       run: |
+        wget http://github-test-logs.ckbapp.dev/ckb/bin/ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz		
+        tar -zxvf ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz	
+        ckb_version=$(./ckb-develop-x86_64-unknown-linux-gnu-portable/ckb --version | sed 's/.* (\(.*\) .*)/\1/')
         git_hash=$(git log -1 --format='%H' | cut -c 1-7)
         echo ${git_hash}
+        echo ${ckb_version}
+        # 比较版本号和哈希值
+        if [ "$ckb_version" == "$git_hash" ]; then
+          echo "版本号与哈希值相匹配。"
+          echo "::set-output name=compare_result::false"  # 或者根据上一个步骤的执行结果设置 compare_result
+        else
+          echo "版本号与哈希值不匹配。"
+          echo "备份老版本"
+          mv ckb-develop-x86_64-unknown-linux-gnu-portable ckb-latest-x86_64-unknown-linux-gnu-portable
+          tar -zcvf ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz ckb-latest-x86_64-unknown-linux-gnu-portable
+          echo "设置上传到七牛云"
+          echo "备份新版本"
+          make prod
+          cp target/prod/ckb ckb-latest-x86_64-unknown-linux-gnu-portable/ckb
+          mv ckb-latest-x86_64-unknown-linux-gnu-portable ckb-develop-x86_64-unknown-linux-gnu-portable
+          tar -zcvf ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz ckb-develop-x86_64-unknown-linux-gnu-portable
+          echo "::set-output name=compare_result::true"  # 或者根据上一个步骤的执行结果设置 compare_result
+        fi
+        
+    - name: Upload latest to Qiniu
+      if: ${{ steps.my_previous_step.outputs.compare_result == 'true' }}
+      uses: gpBlockchain/upload-to-qiniu-action@main
+      with:
+        access_key: ${{ secrets.ACCESS_KEY }}
+        secret_key: ${{ secrets.SECRET_KEY }}
+        bucket_name: acceptance-test 
+        key: ckb/bin/ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
+        local_file: ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
+
+    - name: Upload develop to Qiniu
+      if: ${{ steps.my_previous_step.outputs.compare_result == 'true' }}
+      uses: gpBlockchain/upload-to-qiniu-action@main
+      with:
+        access_key: ${{ secrets.ACCESS_KEY }}
+        secret_key: ${{ secrets.SECRET_KEY }}
+        bucket_name: acceptance-test 
+        key: ckb/bin/ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz
+        local_file: ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz
