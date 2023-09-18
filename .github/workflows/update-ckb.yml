@@ -22,5 +22,5 @@ jobs:
         ref: develop
     - name: Update ckb
       run: |
-        ckb_version=$(./ckb --version | sed 's/.* (\(.*\) .*)/\1/')
-        echo ${ckb_version}
+        git_hash=$(git log -1 --format='%H' | cut -c 1-7)
+        echo ${git_hash}
