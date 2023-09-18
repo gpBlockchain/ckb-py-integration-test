@@ -22,6 +22,5 @@ jobs:
         ref: develop
     - name: Update ckb
       run: |
-        cd ckb
         ckb_version=$(./ckb --version | sed 's/.* (\(.*\) .*)/\1/')
         echo ${ckb_version}
