@@ -41,8 +41,8 @@ jobs:
           tar -zcvf ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz ckb-latest-x86_64-unknown-linux-gnu-portable
           echo "设置上传到七牛云"
           echo "备份新版本"
-          #make prod
-          #cp target/prod/ckb ckb-latest-x86_64-unknown-linux-gnu-portable/ckb
+          make prod
+          cp target/prod/ckb ckb-latest-x86_64-unknown-linux-gnu-portable/ckb
           mv ckb-latest-x86_64-unknown-linux-gnu-portable ckb-develop-x86_64-unknown-linux-gnu-portable
           tar -zcvf ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz ckb-develop-x86_64-unknown-linux-gnu-portable
           echo "compare_result=true" >> $GITHUB_OUTPUT
