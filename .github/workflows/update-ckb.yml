@@ -27,7 +27,7 @@ jobs:
         echo ${git_hash}
         echo ${ckb_version}
         # 比较版本号和哈希值
-        if [ "$ckb_version" == "$git_hash" ]; then
+        if [ "$ckb_version" != "$git_hash" ]; then
           echo "版本号与哈希值相匹配。"
           echo "::set-output name=compare_result::false"  # 或者根据上一个步骤的执行结果设置 compare_result
           echo "compare_result=false" >> $GITHUB_OUTPUT
@@ -46,15 +46,15 @@ jobs:
           echo "compare_result=true" >> $GITHUB_OUTPUT
         fi
         
-    - name: Upload latest to Qiniu
-      if: ${{ steps.UpdateCkb.outputs.compare_result == 'true' }}
-      uses: gpBlockchain/upload-to-qiniu-action@main
-      with:
-        access_key: ${{ secrets.ACCESS_KEY }}
-        secret_key: ${{ secrets.SECRET_KEY }}
-        bucket_name: acceptance-test 
-        key: ckb/bin/ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
-        local_file: ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
+    # - name: Upload latest to Qiniu
+    #   if: ${{ steps.UpdateCkb.outputs.compare_result == 'true' }}
+    #   uses: gpBlockchain/upload-to-qiniu-action@main
+    #   with:
+    #     access_key: ${{ secrets.ACCESS_KEY }}
+    #     secret_key: ${{ secrets.SECRET_KEY }}
+    #     bucket_name: acceptance-test 
+    #     key: ckb/bin/ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
+    #     local_file: ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
 
     - name: Upload develop to Qiniu
       if: ${{ steps.UpdateCkb.outputs.compare_result == 'true' }}
