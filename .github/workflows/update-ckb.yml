@@ -17,6 +17,7 @@ jobs:
       with:
         repository: nervosnetwork/ckb
         ref: develop
+        
     - name: Update ckb
       id: UpdateCkb
       run: |
@@ -27,7 +28,7 @@ jobs:
         echo ${git_hash}
         echo ${ckb_version}
         # 比较版本号和哈希值
-        if [ "$ckb_version" != "$git_hash" ]; then
+        if [ "$ckb_version" == "$git_hash" ]; then
           echo "版本号与哈希值相匹配。"
           echo "::set-output name=compare_result::false"  # 或者根据上一个步骤的执行结果设置 compare_result
           echo "compare_result=false" >> $GITHUB_OUTPUT
@@ -39,22 +40,22 @@ jobs:
           echo "设置上传到七牛云"
           echo "备份新版本"
           export GIT_TAG_NAME=` echo ${{ github.ref }} | awk -F '/' '{print $4}' `
-          docker run --rm -i -w /ckb -v $(pwd):/ckb -e OPENSSL_STATIC=1 -e OPENSSL_LIB_DIR=/usr/local/lib64 -e OPENSSL_INCLUDE_DIR=/usr/local/include nervos/ckb-docker-builder:bionic-rust-1.67.1  make prod_portable
+          docker run --rm -i -w /ckb -v $(pwd):/ckb -e OPENSSL_STATIC=1 -e OPENSSL_LIB_DIR=/usr/lib/x86_64-linux-gnu -e OPENSSL_INCLUDE_DIR=/usr/include nervos/ckb-docker-builder:bionic-rust-1.67.1  make prod_portable
           cp target/prod/ckb ckb-latest-x86_64-unknown-linux-gnu-portable/ckb
           mv ckb-latest-x86_64-unknown-linux-gnu-portable ckb-develop-x86_64-unknown-linux-gnu-portable
           tar -zcvf ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz ckb-develop-x86_64-unknown-linux-gnu-portable
           echo "compare_result=true" >> $GITHUB_OUTPUT
         fi
         
-    # - name: Upload latest to Qiniu
-    #   if: ${{ steps.UpdateCkb.outputs.compare_result == 'true' }}
-    #   uses: gpBlockchain/upload-to-qiniu-action@main
-    #   with:
-    #     access_key: ${{ secrets.ACCESS_KEY }}
-    #     secret_key: ${{ secrets.SECRET_KEY }}
-    #     bucket_name: acceptance-test 
-    #     key: ckb/bin/ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
-    #     local_file: ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
+    - name: Upload latest to Qiniu
+      if: ${{ steps.UpdateCkb.outputs.compare_result == 'true' }}
+      uses: gpBlockchain/upload-to-qiniu-action@main
+      with:
+        access_key: ${{ secrets.ACCESS_KEY }}
+        secret_key: ${{ secrets.SECRET_KEY }}
+        bucket_name: acceptance-test 
+        key: ckb/bin/ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
+        local_file: ckb-latest-x86_64-unknown-linux-gnu-portable.tar.gz
 
     - name: Upload develop to Qiniu
       if: ${{ steps.UpdateCkb.outputs.compare_result == 'true' }}
@@ -65,3 +66,4 @@ jobs:
         bucket_name: acceptance-test 
         key: ckb/bin/ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz
         local_file: ckb-develop-x86_64-unknown-linux-gnu-portable.tar.gz
+    
