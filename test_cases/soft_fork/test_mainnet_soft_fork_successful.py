@@ -23,7 +23,7 @@ class TestMainNetSoftForkSuccessful(CkbTest):
 
         cls.cluster.start_all_nodes()
         cls.cluster.connected_all_nodes()
-        cls.Miner.make_tip_height_number(node2, 200)
+        cls.Miner.make_tip_height_number(node1, 200)
         cls.Node.wait_cluster_height(cls.cluster, 100, 300)
 
     @classmethod

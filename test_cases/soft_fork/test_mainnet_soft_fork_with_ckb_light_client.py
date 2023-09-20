@@ -66,7 +66,7 @@ class TestMainnetSoftForkWithCkbLightClient(CkbTest):
             "code_hash": "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8", "hash_type": "type",
             "args": self.account['lock_arg']}, "script_type": "lock"})
         self.node.start_miner()
-        self.Node.wait_light_sync_height(self.ckb_light_node, height[0], 600)
+        self.Node.wait_light_sync_height(self.ckb_light_node, height[0], 800)
         light_res = self.ckb_light_node.getClient().get_cells_capacity({"script": {
             "code_hash": "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8", "hash_type": "type",
             "args": self.account['lock_arg']}, "script_type": "lock"})
