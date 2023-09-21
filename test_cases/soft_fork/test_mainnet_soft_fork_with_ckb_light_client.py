@@ -36,6 +36,7 @@ class TestMainnetSoftForkWithCkbLightClient(CkbTest):
         cls.ckb_light_node.getClient().set_scripts([{"script": {
             "code_hash": "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8", "hash_type": "type",
             "args": cls.account['lock_arg']}, "script_type": "lock", "block_number": "0x0"}])
+        cls.Node.wait_light_sync_height(cls.ckb_light_node,100,200)
 
     @classmethod
     def teardown_class(cls):
