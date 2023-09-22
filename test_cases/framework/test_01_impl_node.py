@@ -17,7 +17,7 @@ class TestImplCkbTest(CkbTest):
         cls.node.stop()
         cls.node.clean()
 
-    def test_miner(self):
+    def test_01_miner(self):
         time.sleep(10)
         self.node.start_miner()
         time.sleep(10)

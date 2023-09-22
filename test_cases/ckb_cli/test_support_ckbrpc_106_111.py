@@ -23,7 +23,7 @@ class TestCkbCliSupport110(CkbTest):
         assert "ckb-cli" in ckb_cli_version, "{ckb_cli_version} not contains ckb-cli".format(
             ckb_cli_version=ckb_cli_version)
 
-    def test_estimate_cycles(self):
+    def test_02_estimate_cycles(self):
         """
         estimate_cycles cellbase tx
         - return : 0
@@ -39,7 +39,7 @@ class TestCkbCliSupport110(CkbTest):
                                               api_url=self.node.getClient().url)
         assert result == 0
 
-    def test_get_transaction_and_witness_proof(self):
+    def test_03_get_transaction_and_witness_proof(self):
         """
         get_transaction_and_witness_proof cellbase tx
         Returns: block_hash which transactions in the block with this hash
@@ -54,7 +54,7 @@ class TestCkbCliSupport110(CkbTest):
                                                                 api_url=self.node.getClient().url)
         assert result['block_hash'] == cellbase_block_hash
 
-    def test_verify_transaction_and_witness_proof(self):
+    def test_04_verify_transaction_and_witness_proof(self):
         """
         verify_transaction_and_witness_proof cellbase tx_proof
         Returns: cellbase transaction hashes it commits to.
@@ -69,7 +69,7 @@ class TestCkbCliSupport110(CkbTest):
         result = self.Ckb_cli.verify_transaction_and_witness_proof("/tmp/tmp.json", api_url=self.node.getClient().url)
         assert result == block['transactions'][0]['hash']
 
-    def test_get_block_with_cycles(self):
+    def test_05_get_block_with_cycles(self):
         """
         get_block_with_cycles for cellbase
         Returns:cycles: []
@@ -81,7 +81,7 @@ class TestCkbCliSupport110(CkbTest):
         result = self.Ckb_cli.get_block(cellbase_block_hash, with_cycles=True, api_url=self.node.getClient().url)
         assert result == '[]'
 
-    def test_get_block_by_number_with_cycles(self):
+    def test_06_get_block_by_number_with_cycles(self):
         """
         get_block_by_number_with_cycles for cellbase
         Returns:cycles: []
@@ -91,7 +91,7 @@ class TestCkbCliSupport110(CkbTest):
         result = self.Ckb_cli.get_block_by_number(block_number, with_cycles=True, api_url=self.node.getClient().url)
         assert result == '[]'
 
-    def test_get_consensus(self):
+    def test_07_get_consensus(self):
         """
         get_consensus
         Returns:hardfork_features includes 0048 && 0049
@@ -103,7 +103,7 @@ class TestCkbCliSupport110(CkbTest):
         assert any(
             feature.get('rfc') == '0049' for sublist in hardfork_features for feature in sublist), "不包含 RFC 协议 0049"
 
-    def test_get_deployments_info(self):
+    def test_08_get_deployments_info(self):
         """
         get_deployments_info
         Returns:deployments::light_client::state

@@ -23,17 +23,17 @@ class TestHelperContract(CkbTest):
         cls.node.stop()
         cls.node.clean()
 
-    def test_get_deploy_data_contract_hash(self):
+    def test_01_get_deploy_data_contract_hash(self):
         code_hash = self.Contract.get_ckb_contract_codehash(self.always_success_deploy_hash, 0, False,
                                                             self.node.getClient().url)
         assert code_hash == "0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5"
 
-    def test_get_deploy_type_contract_hash(self):
+    def test_02_get_deploy_type_contract_hash(self):
         self.Contract.get_ckb_contract_codehash(self.always_success_deploy_hash, 0, True,
                                                 self.node.getClient().url)
         # assert code_hash == "0xc68ad51e90b6cd00a93815b4dab30b2568f0543b11b5632f1a331ff1b4b0963a"
 
-    def test_invoke_contract_use_type(self):
+    def test_03_invoke_contract_use_type(self):
         code_hash = self.Contract.get_ckb_contract_codehash(self.always_success_deploy_hash, 0, True,
                                                             self.node.getClient().url)
         invoke_hash = self.Contract.invoke_ckb_contract(account_private=self.Config.MINER_PRIVATE_1,
@@ -48,7 +48,7 @@ class TestHelperContract(CkbTest):
         assert tx_response["transaction"]["outputs"][0]["type"]["hash_type"] == "type"
         assert tx_response["transaction"]["outputs"][0]["type"]["args"] == "0x02"
 
-    def test_invoke_contract_use_data(self):
+    def test_04_invoke_contract_use_data(self):
         code_hash = self.Contract.get_ckb_contract_codehash(self.always_success_deploy_hash, 0, False,
                                                             self.node.getClient().url)
 
@@ -64,7 +64,7 @@ class TestHelperContract(CkbTest):
         assert tx_response["transaction"]["outputs"][0]["type"]["hash_type"] == "data"
         assert tx_response["transaction"]["outputs"][0]["type"]["args"] == "0x02"
 
-    def test_invoke_contract_use_data1(self):
+    def test_05_invoke_contract_use_data1(self):
         code_hash = self.Contract.get_ckb_contract_codehash(self.always_success_deploy_hash, 0, False,
                                                             self.node.getClient().url)
 

@@ -62,17 +62,17 @@ class TestHelperContract(CkbTest):
 
     @pytest.mark.parametrize("path", success_files)
     # @pytest.mark.skip
-    def test_deploy_and_invoke_demo(self, path):
+    def test_01_deploy_and_invoke_demo(self, path):
         return self.deploy_and_invoke(self.Config.MINER_PRIVATE_1, path, self.node)
 
     @pytest.mark.parametrize("path", failed_files)
-    def test_deploy_and_invoke_demo_failed(self, path):
+    def test_02_deploy_and_invoke_demo_failed(self, path):
         try:
             self.deploy_and_invoke(self.Config.MINER_PRIVATE_1, path, self.node)
         except Exception as e:
             print(e)
 
-    def test_stack_overflow(self):
+    def test_03_stack_overflow(self):
         """
         contract link:
         https://github.com/gpBlockchain/ckb-test-contracts/blob/main/rust/acceptance-contracts/contracts/spawn_demo/src/spawn_recursive.rs
@@ -83,7 +83,7 @@ class TestHelperContract(CkbTest):
                                self.node)
 
     # @pytest.mark.skip
-    def test_estimate_cycles_bug(self):
+    def test_04_estimate_cycles_bug(self):
         """
         https://github.com/gpBlockchain/ckb-test-contracts/blob/main/rust/acceptance-contracts/contracts/spawn_demo/src/spawn_times.rs
         send_transaction( big cycle tx )

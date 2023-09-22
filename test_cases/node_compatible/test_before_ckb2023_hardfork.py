@@ -28,7 +28,7 @@ class TestBeforeCkb2023(CkbTest):
         cls.cluster.stop_all_nodes()
         cls.cluster.clean_all_nodes()
 
-    def test_node_sync(self):
+    def test_01_node_sync(self):
         """
         wait all nodes sync
         - sync successful
@@ -38,7 +38,7 @@ class TestBeforeCkb2023(CkbTest):
         self.Node.wait_cluster_height(self.cluster, tip_number, 300)
 
     @pytest.mark.parametrize("version,node", [(node.__str__(), node) for node in cluster.ckb_nodes])
-    def test_node_miner(self, version, node):
+    def test_02_node_miner(self, version, node):
         """
         node miner
         - sync miner block succ
@@ -52,7 +52,7 @@ class TestBeforeCkb2023(CkbTest):
         self.Node.wait_cluster_height(self.cluster, tip_number, 300)
 
     @pytest.mark.parametrize("version,node", [(node.__str__(), node) for node in cluster.ckb_nodes])
-    def test_transfer(self, version, node):
+    def test_03_transfer(self, version, node):
         """
         send transfer tx
         - sync pending tx successful
@@ -78,7 +78,7 @@ class TestBeforeCkb2023(CkbTest):
         print(self.Ckb_cli.cli_path)
 
     @pytest.mark.parametrize("version,node", [(node.__str__(), node) for node in cluster.ckb_nodes])
-    def test_spawn_tx(self, version, node):
+    def test_04_spawn_tx(self, version, node):
         """
          send spawn tx by data1 .
         - return Error: InvalidEcall(2101)

@@ -3,16 +3,6 @@ import pytest
 from framework.basic import CkbTest
 
 
-# from framework.config import ACCOUNT_PRIVATE_2, ACCOUNT_PRIVATE_1, MINER_PRIVATE_1
-# from framework.helper.ckb_cli import util_key_info_by_private_key, wallet_transfer_by_private_key
-# from framework.helper.contract import invoke_ckb_contract
-# from framework.helper.contract_util import deploy_contracts
-# from framework.helper.miner import make_tip_height_number, miner_with_version, miner_until_tx_committed
-# from framework.helper.node import wait_cluster_height
-# from framework.test_cluster import Cluster
-# from framework.test_node import CkbNode, CkbNodeConfigPath
-
-
 class TestAfterHardFork(CkbTest):
 
 
@@ -48,7 +38,7 @@ class TestAfterHardFork(CkbTest):
         assert int(current_epoch_result['number'].replace("0x", "")) >= get_epoch_number_by_consensus_response(
             consensus_response, '0048')
 
-    def test_0048_block_version_0x(self):
+    def test_01_0048_block_version_0x(self):
         """
         After the fork, the miner's block version is 0x0.
         - block mining successful.
@@ -59,7 +49,7 @@ class TestAfterHardFork(CkbTest):
         after_miner_num = self.cluster.ckb_nodes[0].getClient().get_tip_block_number()
         assert after_miner_num > before_miner_num
 
-    def test_0048_block_version_0x1(self):
+    def test_02_0048_block_version_0x1(self):
         """
             After the fork, the miner's block version is 0x1.
             - block mining successful.
@@ -70,7 +60,7 @@ class TestAfterHardFork(CkbTest):
         after_miner_num = self.cluster.ckb_nodes[0].getClient().get_tip_block_number()
         assert after_miner_num > before_miner_num
 
-    def test_0048_block_version_0xffffff(self):
+    def test_03_0048_block_version_0xffffff(self):
         """
             After the fork, the miner's block version is 0xffffff.
             - block mining successful.
@@ -81,7 +71,7 @@ class TestAfterHardFork(CkbTest):
         after_miner_num = self.cluster.ckb_nodes[0].getClient().get_tip_block_number()
         assert after_miner_num > before_miner_num
 
-    def test_0048_block_version_0x100000000(self):
+    def test_04_0048_block_version_0x100000000(self):
         """
             After the fork, the miner's block version is 0x100000000.
            - error : number too large to fit
@@ -93,7 +83,7 @@ class TestAfterHardFork(CkbTest):
         assert expected_error_message in exc_info.value.args[0], \
             f"Expected substring '{expected_error_message}' not found in actual string '{exc_info.value.args[0]}'"
 
-    def test_send_tx_when_after_0th_fork(self):
+    def test_05_send_tx_when_after_0th_fork(self):
         """
             The first block sends a regular transaction.
             - return tx_hash
@@ -121,7 +111,7 @@ class TestAfterHardFork(CkbTest):
         print(int(block["header"]["number"], 16))
         assert int(block["header"]["number"], 16) >= 1010
 
-    def test_0049_send_data2_tx(self):
+    def test_06_0049_send_data2_tx(self):
         """
         After a period of hard fork, a data2 transaction is sent.
         - return tx_hash
@@ -150,7 +140,7 @@ class TestAfterHardFork(CkbTest):
         print(f"tx response:{tx_response['tx_status']['status']}")
         assert tx_response['tx_status']['status'] == "committed"
 
-    def test_0050_spawn_use_data2(self):
+    def test_07_0050_spawn_use_data2(self):
         """
             After a period of hard fork,send spawn tx by data2 .
             - return tx_hash
@@ -167,7 +157,7 @@ class TestAfterHardFork(CkbTest):
                                                     api_url=self.cluster.ckb_nodes[0].getClient().url)
         self.Miner.miner_until_tx_committed(self.cluster.ckb_nodes[0], tx_hash)
 
-    def test_0050_spawn_use_data1(self):
+    def test_08_0050_spawn_use_data1(self):
         """
         After a period of hard fork,send spawn tx by data1 .
             - return Error: InvalidEcall(2101)
@@ -184,7 +174,7 @@ class TestAfterHardFork(CkbTest):
         assert expected_error_message in exc_info.value.args[0], \
             f"Expected substring '{expected_error_message}' not found in actual string '{exc_info.value.args[0]}'"
 
-    def test_0050_spawn_use_data(self):
+    def test_09_0050_spawn_use_data(self):
         """
           After a period of hard fork,send spawn tx by data1 .
             - return Error: InvalidInstruction
@@ -200,7 +190,7 @@ class TestAfterHardFork(CkbTest):
         assert expected_error_message in exc_info.value.args[0], \
             f"Expected substring '{expected_error_message}' not found in actual string '{exc_info.value.args[0]}'"
 
-    def test_0050_spawn_use_type(self):
+    def test_10_0050_spawn_use_type(self):
         """
         After a period of hard fork,send spawn tx by data1 .
         - return tx_hash

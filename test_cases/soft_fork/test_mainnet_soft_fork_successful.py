@@ -27,7 +27,7 @@ class TestMainNetSoftForkSuccessful(CkbTest):
         cls.cluster.stop_all_nodes()
         cls.cluster.clean_all_nodes()
 
-    def test_miner_use_110(self):
+    def test_01_miner_use_110(self):
         """
         110 node miner will cause softfork active
         1. 110 node miner to 8314

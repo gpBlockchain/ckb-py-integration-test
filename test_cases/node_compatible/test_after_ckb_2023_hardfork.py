@@ -44,13 +44,13 @@ class TestAfterCkb2023(CkbTest):
         cls.cluster.stop_all_nodes()
         cls.cluster.clean_all_nodes()
 
-    def test_lt_111_sync_hard_fork(self):
+    def test_01_lt_111_sync_hard_fork(self):
         self.Node.wait_node_height(self.node_110, 990, 100)
         time.sleep(10)
         tip_number = self.node_110.getClient().get_tip_block_number()
         assert tip_number <= 999
 
-    def test_lt_111_sync_failed(self):
+    def test_02_lt_111_sync_failed(self):
         node = self.CkbNode.init_dev_by_port(self.CkbNodeConfigPath.V110, "node_compatible/current/node5", 8229,
                                              8339)
         node.prepare()
@@ -63,7 +63,7 @@ class TestAfterCkb2023(CkbTest):
         assert expected_error_message in exc_info.value.args[0], \
             f"Expected substring '{expected_error_message}' not found in actual string '{exc_info.value.args[0]}'"
 
-    def test_sync_successful_ge_111(self):
+    def test_03_sync_successful_ge_111(self):
         node = self.CkbNode.init_dev_by_port(self.CkbNodeConfigPath.V111, "node_compatible/current/node6", 8129,
                                              8239)
         node.prepare()

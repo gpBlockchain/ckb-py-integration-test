@@ -61,7 +61,7 @@ class TestBeforeHardFork(CkbTest):
                < get_epoch_number_by_consensus_response(
             consensus_response, '0048')
 
-    def test_rfc_0048_in_consensus(self):
+    def test_01_rfc_0048_in_consensus(self):
         """
         Check if the consensus response  includes RFC 0048
         -  it includes.
@@ -71,7 +71,7 @@ class TestBeforeHardFork(CkbTest):
         epoch_number = get_epoch_number_by_consensus_response(consensus_response, "0048")
         assert epoch_number >= 0
 
-    def test_rfc_0049_in_consensus(self):
+    def test_02_rfc_0049_in_consensus(self):
         """
         Check if the consensus response  includes RFC 0049
         -  it includes.
@@ -81,7 +81,7 @@ class TestBeforeHardFork(CkbTest):
         epoch_number = get_epoch_number_by_consensus_response(consensus_response, '0049')
         assert epoch_number >= 0
 
-    def test_0048_miner_with_0x0(self):
+    def test_03_0048_miner_with_0x0(self):
         """
         Before the fork, the miner's block version is 0x0.
         - block mining successful.
@@ -92,7 +92,7 @@ class TestBeforeHardFork(CkbTest):
         after_miner_num = self.cluster.ckb_nodes[0].getClient().get_tip_block_number()
         assert after_miner_num > before_miner_num
 
-    def test_0048_miner_with_0x1(self):
+    def test_04_0048_miner_with_0x1(self):
         """
         Before the fork, the miner's block version is 0x1.
         - Return error : BlockVersionError
@@ -105,7 +105,7 @@ class TestBeforeHardFork(CkbTest):
             f"Expected substring '{expected_error_message}" \
             f"' not found in actual string '{exc_info.value.args[0]}'"
 
-    def test_0049_transfer_to_data2_address(self):
+    def test_05_0049_transfer_to_data2_address(self):
         """
         Before the fork, send a transaction with type: data2.
         - return error : "the feature \"VM Version 2\" is used in current transaction
@@ -138,7 +138,7 @@ class TestBeforeHardFork(CkbTest):
             f"Expected substring '{expected_error_message}'" \
             f" not found in actual string '{exc_info.value.args[0]}'"
 
-    def test__0050_invoke_spawn_use_type(self):
+    def test_06_0050_invoke_spawn_use_type(self):
         """
         Before the fork, send a transaction contains spawn , use  script:type invoke it.
         - return error: InvalidEcall(2101)
@@ -147,19 +147,22 @@ class TestBeforeHardFork(CkbTest):
         code_tx_hash, code_tx_index = self.spawn_contract.get_deploy_hash_and_index()
         invoke_arg, invoke_data = self.spawn_contract.get_arg_and_data("demo")
         with pytest.raises(Exception) as exc_info:
-            self.Contract.invoke_ckb_contract(self.Config.MINER_PRIVATE_1,
+            tip_block_number = self.cluster.ckb_nodes[0].getClient().get_tip_block_number()
+            print('tip_block_number:',tip_block_number)
+            tx_hash = self.Contract.invoke_ckb_contract(self.Config.MINER_PRIVATE_1,
                                               code_tx_hash,
                                               code_tx_index,
                                               invoke_arg,
                                               "type",
                                               invoke_data,
                                               api_url=self.cluster.ckb_nodes[0].getClient().url)
+            print("tx hash :",tx_hash)
         expected_error_message = "InvalidEcall(2101)"
         assert expected_error_message in exc_info.value.args[0], \
             f"Expected substring '{expected_error_message}' " \
             f"not found in actual string '{exc_info.value.args[0]}'"
 
-    def test_0049_transfer_tx_when_10th_block_before_fork(self):
+    def test_07_0049_transfer_tx_when_10th_block_before_fork(self):
         """
         send data2 Transactions  of the 10th block before the fork:
         - Sending data2 returns the transaction hash.
@@ -192,7 +195,7 @@ class TestBeforeHardFork(CkbTest):
         assert tx_response['tx_status']['status'] == "rejected" \
                or tx_response['tx_status']['status'] == "unknown"
 
-    def test_send_transfer_tx_when_10th_block_before_fork(self):
+    def test_08_send_transfer_tx_when_10th_block_before_fork(self):
         """
         send transfer Transactions  of the 10th block before the fork:
         - return hash

@@ -42,7 +42,7 @@ class TestMainnetSoftForkWithCkbLightClient(CkbTest):
         cls.ckb_light_node.stop()
         cls.ckb_light_node.clean()
 
-    def test_soft_fork_activation_light_node(self):
+    def test_01_soft_fork_activation_light_node(self):
         """
         Soft fork transitioning from 'defined' to 'active' will not
         affect the synchronization of light nodes.

@@ -21,28 +21,28 @@ class TestCkbCli(CkbTest):
         assert "ckb-cli" in ckb_cli_version, "{ckb_cli_version} not contains ckb-cli".format(
             ckb_cli_version=ckb_cli_version)
 
-    def test_util_key_info_by_private_key(self):
+    def test_02_util_key_info_by_private_key(self):
         account1 = self.Ckb_cli.util_key_info_by_private_key(self.Config.ACCOUNT_PRIVATE_1)
         assert "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqwgx292hnvmn68xf779vmzrshpmm6epn4c0cgwga" == \
                account1['address']['testnet']
 
-    def test_get_deploy_toml(self):
+    def test_03_get_deploy_toml(self):
         config_toml_str = self.Ckb_cli.get_deploy_toml_config(self.Config.ACCOUNT_PRIVATE_2, "/tmp/path", True)
         assert "0x470dcdc5e44064909650113a274b3b36aecb6dc7" in config_toml_str
 
-    def test_get_account_balance(self):
+    def test_04_get_account_balance(self):
         account1 = self.Ckb_cli.util_key_info_by_private_key(self.Config.ACCOUNT_PRIVATE_1)
         ckb_address = account1['address']['testnet']
         account_capacity = self.Ckb_cli.wallet_get_capacity(ckb_address, self.node.getClient().url)
         assert account_capacity > 10000000000.0
 
-    def test_get_account_live_cells(self):
+    def test_05_get_account_live_cells(self):
         account1 = self.Ckb_cli.util_key_info_by_private_key(self.Config.ACCOUNT_PRIVATE_1)
         ckb_address = account1['address']['testnet']
         live_cells = self.Ckb_cli.wallet_get_live_cells(ckb_address, self.node.getClient().url)
         assert len(live_cells["live_cells"]) > 0
 
-    def test_account1_transfer_account2(self):
+    def test_06_account1_transfer_account2(self):
         transfer_balance = 100
 
         account2 = self.Ckb_cli.util_key_info_by_private_key(self.Config.ACCOUNT_PRIVATE_2)
