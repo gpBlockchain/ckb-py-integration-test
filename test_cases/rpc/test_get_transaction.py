@@ -4,13 +4,7 @@ from framework.basic import CkbTest
 from test_cases.rpc.node_fixture import get_cluster
 
 
-class TestGetTransaction(CkbTest):
-
-    def setup_method(self, method):
-        pass
-
-    def teardown_method(self, method):
-        pass
+class TestGetTransaction:
 
     def test_query_tx_only_commit_is_true(self, get_cluster):
         """
@@ -29,8 +23,8 @@ class TestGetTransaction(CkbTest):
         :return:
         """
         cluster = get_cluster
-        account1 = self.Ckb_cli.util_key_info_by_private_key(self.Config.ACCOUNT_PRIVATE_1)
-        tx_hash = self.Ckb_cli.wallet_transfer_by_private_key(self.Config.ACCOUNT_PRIVATE_1,
+        account1 = CkbTest.Ckb_cli.util_key_info_by_private_key(CkbTest.Config.ACCOUNT_PRIVATE_1)
+        tx_hash = CkbTest.Ckb_cli.wallet_transfer_by_private_key(CkbTest.Config.ACCOUNT_PRIVATE_1,
                                                               account1["address"]["testnet"],
                                                               140,
                                                               cluster.ckb_nodes[0].client.url)
@@ -52,7 +46,7 @@ class TestGetTransaction(CkbTest):
                 assert response_enable_commit['tx_status']['status'] == "committed"
                 assert response['tx_status']['status'] == "committed"
                 return
-            self.Miner.miner_with_version(cluster.ckb_nodes[0], "0x0")
+            CkbTest.Miner.miner_with_version(cluster.ckb_nodes[0], "0x0")
             time.sleep(1)
         response_enable_commit = cluster.ckb_nodes[0].getClient().get_transaction(tx_hash, None, True)
         response = cluster.ckb_nodes[0].getClient().get_transaction(tx_hash, None, False)
@@ -64,7 +58,7 @@ class TestGetTransaction(CkbTest):
             response = cluster.ckb_nodes[0].getClient().get_transaction(tx_hash, None, False)
             if response['tx_status']['status'] == "committed":
                 break
-            self.Miner.miner_with_version(cluster.ckb_nodes[0], "0x0")
+            CkbTest.Miner.miner_with_version(cluster.ckb_nodes[0], "0x0")
             time.sleep(1)
         response_enable_commit = cluster.ckb_nodes[0].getClient().get_transaction(tx_hash, None, True)
         response = cluster.ckb_nodes[0].getClient().get_transaction(tx_hash, None, True)
@@ -78,8 +72,8 @@ class TestGetTransaction(CkbTest):
         :return:
         """
         cluster = get_cluster
-        account1 = self.Ckb_cli.util_key_info_by_private_key(self.Config.ACCOUNT_PRIVATE_1)
-        tx_hash = self.Ckb_cli.wallet_transfer_by_private_key(self.Config.ACCOUNT_PRIVATE_1,
+        account1 = CkbTest.Ckb_cli.util_key_info_by_private_key(CkbTest.Config.ACCOUNT_PRIVATE_1)
+        tx_hash = CkbTest.Ckb_cli.wallet_transfer_by_private_key(CkbTest.Config.ACCOUNT_PRIVATE_1,
                                                               account1["address"]["testnet"],
                                                               140,
                                                               cluster.ckb_nodes[0].client.url)
@@ -89,4 +83,4 @@ class TestGetTransaction(CkbTest):
         response = cluster.ckb_nodes[0].getClient().get_transaction(tx_hash, None, False)
         assert response['tx_status']['status'] == "pending"
         assert response_use_default['tx_status']['status'] == "pending"
-        self.Miner.miner_until_tx_committed(cluster.ckb_nodes[0], tx_hash)
+        CkbTest.Miner.miner_until_tx_committed(cluster.ckb_nodes[0], tx_hash)
