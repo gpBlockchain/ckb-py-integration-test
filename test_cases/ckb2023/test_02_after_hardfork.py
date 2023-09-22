@@ -15,8 +15,6 @@ from framework.basic import CkbTest
 
 class TestAfterHardFork(CkbTest):
 
-    def teardown_method(self, method):
-        pass
 
     @classmethod
     def setup_class(cls):
@@ -43,6 +41,7 @@ class TestAfterHardFork(CkbTest):
         cls.cluster.clean_all_nodes()
 
     def setup_method(self, method):
+        super().setup_method(method)
         current_epoch_result = self.cluster.ckb_nodes[0].getClient().get_current_epoch()
         consensus_response = self.cluster.ckb_nodes[0].getClient().get_consensus()
         # current epoch <  consensus epoch .length

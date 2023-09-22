@@ -4,11 +4,6 @@ from framework.basic import CkbTest
 
 
 class TestDiffOverflow(CkbTest):
-    def setup_method(self, method):
-        pass
-
-    def teardown_method(self, method):
-        pass
 
     node: CkbTest.CkbNode
     cluster: CkbTest.Cluster

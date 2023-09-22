@@ -5,11 +5,6 @@ from framework.basic import CkbTest
 
 class TestImplCkbTest(CkbTest):
 
-    def setup_method(self, method):
-        pass
-
-    def teardown_method(self, method):
-        pass
 
     @classmethod
     def setup_class(cls):

@@ -9,12 +9,6 @@ from framework.util import get_project_root
 
 class Test4111(CkbTest):
 
-    def setup_method(self, method):
-        pass
-
-    def teardown_method(self, method):
-        pass
-
     @classmethod
     def setup_class(cls):
         node1 = cls.CkbNode.init_dev_by_port(cls.CkbNodeConfigPath.CURRENT_TEST, "issue/node1", 8914,

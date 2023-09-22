@@ -2,11 +2,6 @@ from framework.basic import CkbTest
 
 
 class TestDevNetSoftFork(CkbTest):
-    def setup_method(self, method):
-        pass
-
-    def teardown_method(self, method):
-        pass
 
     node: CkbTest.CkbNode
 

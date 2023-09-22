@@ -6,9 +6,6 @@ from framework.basic import CkbTest
 
 class Test4133(CkbTest):
 
-    def setup_method(self, method):
-        pass
-
     def test_4133(self):
         """
             issue link:https://github.com/nervosnetwork/ckb/pull/4142
@@ -66,6 +63,7 @@ class Test4133(CkbTest):
         assert current_last_connected_at_ms > pre_last_connected_at_ms
 
     def teardown_method(self, method):
+        super().teardown_method(method)
         print("\nTearing down method", method.__name__)
         self.node1.stop()
         self.node1.clean()

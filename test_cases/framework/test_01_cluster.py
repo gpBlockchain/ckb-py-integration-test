@@ -33,9 +33,3 @@ class TestCluster(CkbTest):
         assert heights[1] > 0
         assert heights[2] == 0
         assert heights[3] == 0
-
-    def setup_method(self, method):
-        pass
-
-    def teardown_method(self, method):
-        pass

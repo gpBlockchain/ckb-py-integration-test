@@ -9,10 +9,10 @@ DATA_ERROR_TAT = f"{get_project_root()}/source/data/data.err.tar.gz"
 
 class TestSyncDaoLockSizeMismatch(CkbTest):
 
-    def setup_method(self, method):
-        pass
+
 
     def teardown_method(self, method):
+        super().teardown_method(method)
         print("\nTearing down method", method.__name__)
         self.node1.stop_miner()
         self.node1.stop()

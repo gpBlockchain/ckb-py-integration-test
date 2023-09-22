@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+import unittest
 import framework.helper.miner
 import framework.helper.ckb_cli
 import framework.helper.contract
@@ -10,8 +11,10 @@ import framework.test_light_client
 import framework.test_cluster
 import framework.helper
 import framework.config
+import shutil
+from  framework.util import get_project_root
 
-class CkbTest(ABC):
+class CkbTest(ABC,unittest.TestCase):
 
     Miner: framework.helper.miner = framework.helper.miner
     Ckb_cli: framework.helper.ckb_cli = framework.helper.ckb_cli
@@ -34,10 +37,18 @@ class CkbTest(ABC):
     def teardown_class(cls):
         print("\nTeardown TestClass2")
 
-    @abstractmethod
+
     def setup_method(self, method):
+        self.did_pass = None
         print("\nSetting up method", method.__name__)
 
-    @abstractmethod
+
     def teardown_method(self, method):
         print("\nTearing down method", method.__name__)
+        print('\nself.did_pass =', self.did_pass)
+        if not self.did_pass:
+            print("back log data")
+            shutil.copytree(f"{get_project_root()}/tmp", f"{get_project_root()}/report/{method.__name__}")
+
+
+

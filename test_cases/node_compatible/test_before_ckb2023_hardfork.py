@@ -3,11 +3,6 @@ import pytest
 from framework.basic import CkbTest
 
 class TestBeforeCkb2023(CkbTest):
-    def setup_method(self, method):
-        pass
-
-    def teardown_method(self, method):
-        pass
 
     node_current = CkbTest.CkbNode.init_dev_by_port(CkbTest.CkbNodeConfigPath.CURRENT_TEST,
                                                     "node_compatible/current/node1", 8115,

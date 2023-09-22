@@ -5,12 +5,6 @@ from framework.basic import CkbTest
 
 class TestNode(CkbTest):
 
-    def setup_method(self, method):
-        pass
-
-    def teardown_method(self, method):
-        pass
-
     @classmethod
     def setup_class(cls):
         cls.node = cls.CkbNode.init_dev_by_port(cls.CkbNodeConfigPath.CURRENT_TEST, "node/node", 8114, 8115)

@@ -3,12 +3,6 @@ from framework.basic import CkbTest
 
 class TestCkbCli(CkbTest):
 
-    def setup_method(self, method):
-        pass
-
-    def teardown_method(self, method):
-        pass
-
     @classmethod
     def setup_class(cls):
         cls.node = cls.CkbNode.init_dev_by_port(cls.CkbNodeConfigPath.CURRENT_TEST, "ckb_cli/node", 8314, 8315)

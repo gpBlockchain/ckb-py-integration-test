@@ -8,9 +8,6 @@ class TestBeforeHardFork(CkbTest):
     test cases before ckb2023
     """
 
-    def teardown_method(self, method):
-        pass
-
     cluster: CkbTest.Cluster
 
     @classmethod
@@ -56,6 +53,7 @@ class TestBeforeHardFork(CkbTest):
         :param method:
         :return:
         """
+        super().setup_method(method)
         current_epoch_result = self.cluster.ckb_nodes[0].getClient().get_current_epoch()
         consensus_response = self.cluster.ckb_nodes[0].getClient().get_consensus()
         # current epoch <  consensus epoch .length
