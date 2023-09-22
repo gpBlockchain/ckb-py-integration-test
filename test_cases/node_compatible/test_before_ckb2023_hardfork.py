@@ -1,6 +1,7 @@
 import pytest
 
 from framework.basic import CkbTest
+from parameterized import parameterized
 
 class TestBeforeCkb2023(CkbTest):
 
@@ -37,7 +38,7 @@ class TestBeforeCkb2023(CkbTest):
         tip_number = self.node_current.getClient().get_tip_block_number()
         self.Node.wait_cluster_height(self.cluster, tip_number, 300)
 
-    @pytest.mark.parametrize("version,node", [(node.__str__(), node) for node in cluster.ckb_nodes])
+    @parameterized.expand([(node.__str__(), node) for node in cluster.ckb_nodes])
     def test_02_node_miner(self, version, node):
         """
         node miner
@@ -51,7 +52,7 @@ class TestBeforeCkb2023(CkbTest):
         tip_number = node.getClient().get_tip_block_number()
         self.Node.wait_cluster_height(self.cluster, tip_number, 300)
 
-    @pytest.mark.parametrize("version,node", [(node.__str__(), node) for node in cluster.ckb_nodes])
+    @parameterized.expand([(node.__str__(), node) for node in cluster.ckb_nodes])
     def test_03_transfer(self, version, node):
         """
         send transfer tx
@@ -77,7 +78,7 @@ class TestBeforeCkb2023(CkbTest):
             self.Node.wait_get_transaction(query_node, tx_hash, "committed")
         print(self.Ckb_cli.cli_path)
 
-    @pytest.mark.parametrize("version,node", [(node.__str__(), node) for node in cluster.ckb_nodes])
+    @parameterized.expand([(node.__str__(), node) for node in cluster.ckb_nodes])
     def test_04_spawn_tx(self, version, node):
         """
          send spawn tx by data1 .

@@ -3,6 +3,7 @@ import os
 import time
 
 import pytest
+from parameterized import parameterized
 
 from framework.basic import CkbTest
 from framework.util import get_project_root
@@ -60,12 +61,12 @@ class TestHelperContract(CkbTest):
         cls.node.stop()
         cls.node.clean()
 
-    @pytest.mark.parametrize("path", success_files)
+    @parameterized.expand(success_files)
     # @pytest.mark.skip
     def test_01_deploy_and_invoke_demo(self, path):
         return self.deploy_and_invoke(self.Config.MINER_PRIVATE_1, path, self.node)
 
-    @pytest.mark.parametrize("path", failed_files)
+    @parameterized.expand( failed_files)
     def test_02_deploy_and_invoke_demo_failed(self, path):
         try:
             self.deploy_and_invoke(self.Config.MINER_PRIVATE_1, path, self.node)
