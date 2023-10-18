@@ -55,6 +55,9 @@ class RPCClient:
     def get_fee_rate_statics(self, target=None):
         return self.call("get_fee_rate_statics", [target])
 
+    def generate_epochs(self, epoch):
+        return self.call("generate_epochs", [epoch])
+
     def get_deployments_info(self):
         return self.call("get_deployments_info", [])
 
@@ -84,8 +87,9 @@ class RPCClient:
     def get_peers(self):
         return self.call("get_peers", [])
 
-    def set_network_active(self,state):
+    def set_network_active(self, state):
         return self.call("set_network_active", [state])
+
     def remove_transaction(self, tx_hash):
         return self.call("remove_transaction", [tx_hash])
 
@@ -123,10 +127,9 @@ class RPCClient:
                 time.sleep(2)
                 continue
             except Exception as e:
-                print("Exception:",e)
+                print("Exception:", e)
                 raise e
         raise Exception("request time out")
-
 
 
 if __name__ == '__main__':
