@@ -11,20 +11,20 @@ class CkbNodeConfigPath(Enum):
         "source/template/ckb/v112/ckb.toml.j2",
         "source/template/ckb/v112/ckb-miner.toml.j2",
         "source/template/ckb/v112/specs/dev.toml",
-        "download/0.112.0"
+        "download/0.112.1"
     )
 
     V112 = (
         "source/template/ckb/v112/ckb.toml.j2",
         "source/template/ckb/v112/ckb-miner.toml.j2",
         "source/template/ckb/v112/specs/dev.toml",
-        "download/0.112.0"
+        "download/0.112.1"
     )
 
-    CURRENT_MAIN = ("source/template/ckb/v111/ckb.toml.j2",
-                    "source/template/ckb/v111/ckb-miner.toml.j2",
+    CURRENT_MAIN = ("source/template/ckb/v112/ckb.toml.j2",
+                    "source/template/ckb/v112/ckb-miner.toml.j2",
                     "source/template/specs/mainnet.toml.j2",
-                    "download/0.111.0")
+                    "download/0.112.1")
     V111 = (
         "source/template/ckb/v111/ckb.toml.j2",
         "source/template/ckb/v111/ckb-miner.toml.j2",
@@ -42,6 +42,12 @@ class CkbNodeConfigPath(Enum):
         "source/template/ckb/v110/ckb.toml.j2",
         "source/template/ckb/v110/ckb-miner.toml.j2",
         "source/template/specs/mainnet.toml.j2",
+        "download/0.110.2"
+    )
+    V110_TEST = (
+        "source/template/ckb/v110/ckb.toml.j2",
+        "source/template/ckb/v110/ckb-miner.toml.j2",
+        "source/template/specs/testnet.toml.j2",
         "download/0.110.2"
     )
 
@@ -135,6 +141,7 @@ class CkbNode:
         time.sleep(3)
 
     def stop(self):
+        self.stop_miner()
         # run_command("kill {pid}".format(pid=self.ckb_pid))
         # self.ckb_pid = -1
         port = self.rpcUrl.split(":")[-1]
@@ -173,6 +180,8 @@ class CkbNode:
         run_command("rm -rf {ckb_dir}".format(ckb_dir=self.ckb_dir))
 
     def start_miner(self):
+        if self.ckb_miner_pid != -1:
+            return
         self.ckb_miner_pid = run_command(
             "cd {ckb_dir} && ./ckb miner > ckb.miner.log 2>&1  &".format(ckb_dir=self.ckb_dir))
         # replace check height upper
