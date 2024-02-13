@@ -120,6 +120,7 @@ jobs:
         tar -zxvf ckb_${CKB_VERSION}_${REL_PKG}.tar.gz
         wget_md5=$(md5sum "ckb_${CKB_VERSION}_${REL_PKG}/ckb" | awk '{print $1}')
         docker run --rm -i -w /ckb -v $(pwd):/ckb $BUILDER_IMAGE make ${{ matrix.build_target }}
+        cd target/prod
         build_md5=$(md5sum "ckb" | awk '{print $1}')
         if [ "$build_md5" == "$wget_md5" ]; then
             echo "MD5 sums are equal."
@@ -160,6 +161,7 @@ jobs:
         unzip ckb_${CKB_VERSION}_${REL_PKG}.zip
         wget_md5=$(md5sum "ckb_${CKB_VERSION}_${REL_PKG}/ckb" | awk '{print $1}')
         make ${{ matrix.build_target }}
+        cd target/prod
         build_md5=$(md5sum "ckb" | awk '{print $1}')
         if [ "$build_md5" == "$wget_md5" ]; then
             echo "MD5 sums are equal."
