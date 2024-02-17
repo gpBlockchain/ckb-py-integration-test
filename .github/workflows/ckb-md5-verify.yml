@@ -156,6 +156,7 @@ jobs:
         echo "GIT_TAG_NAME=$GIT_TAG_NAME" >> $GITHUB_ENV
     - name: Build CKB and Package CKB
       run: |
+        brew install md5sha1sum
         export GIT_TAG_NAME=` echo ${{ github.ref }} | awk -F '/' '{print $4}' `
         wget https://github.com/nervosnetwork/ckb/releases/download/${CKB_VERSION}/ckb_${CKB_VERSION}_${REL_PKG}.zip
         unzip ckb_${CKB_VERSION}_${REL_PKG}.zip
