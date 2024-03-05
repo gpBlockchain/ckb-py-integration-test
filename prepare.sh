@@ -1,7 +1,7 @@
 set -e
-git clone https://github.com/gpBlockchain/ckb-cli.git
+git clone https://github.com/nervosnetwork/ckb-cli.git
 cd ckb-cli
-git checkout v114
+git checkout pkg/v1.7.0
 make prod
 cp target/release/ckb-cli ../source/ckb-cli
 cd ../
