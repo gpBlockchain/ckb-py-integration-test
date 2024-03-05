@@ -48,7 +48,7 @@ jobs:
             echo "MD5 sums are different:"
             echo "build_md5 1: $build_md5"
             echo "wget_md5 2: $wget_md5"
-            # exit 1
+            exit 1
         fi
     env:
       BUILDER_IMAGE: nervos/ckb-docker-builder:bionic-rust-1.71.1-openssl-3.1.3
