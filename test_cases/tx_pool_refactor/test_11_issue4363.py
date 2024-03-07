@@ -30,7 +30,7 @@ class TestIssue4363(CkbTest):
     def test_01_4363(self):
         """
         https://github.com/nervosnetwork/ckb/pull/4363/files
-        发送一笔子交易，dep 的cell 为会被替换的子交易，替换失败
+        插入消费cellDep时，如果链条太长，就会将多余的链条交易删除
         0. 生成250个live cell 和 cell=a
         1. 发送200笔 tx1(cellDep=a)
         2. 发送 tx2(input = 低手续费的tx1.putput(1 || 2 || 3 || 4 || 5))
