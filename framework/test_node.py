@@ -9,13 +9,25 @@ from websocket import create_connection, WebSocket
 
 
 class CkbNodeConfigPath(Enum):
+
     CURRENT_TEST = (
         "source/template/ckb/v112/ckb.toml.j2",
         "source/template/ckb/v112/ckb-miner.toml.j2",
         "source/template/ckb/v112/specs/dev.toml",
-        "download/0.114.0"
+        "download/0.115.0"
     )
 
+    CURRENT_MAIN = ("source/template/ckb/v112/ckb.toml.j2",
+                    "source/template/ckb/v112/ckb-miner.toml.j2",
+                    "source/template/specs/mainnet.toml.j2",
+                    "download/0.115.0")
+
+    v115 = (
+        "source/template/ckb/v112/ckb.toml.j2",
+        "source/template/ckb/v112/ckb-miner.toml.j2",
+        "source/template/ckb/v112/specs/dev.toml",
+        "download/0.115.0"
+    )
     v114 = (
         "source/template/ckb/v114/ckb.toml.j2",
         "source/template/ckb/v114/ckb-miner.toml.j2",
@@ -23,10 +35,6 @@ class CkbNodeConfigPath(Enum):
         "download/0.114.0"
     )
     
-    CURRENT_MAIN = ("source/template/ckb/v112/ckb.toml.j2",
-                    "source/template/ckb/v112/ckb-miner.toml.j2",
-                    "source/template/specs/mainnet.toml.j2",
-                    "download/0.114.0")
 
     V113 = (
         "source/template/ckb/v113/ckb.toml.j2",
